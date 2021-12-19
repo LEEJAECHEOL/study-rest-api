@@ -2,6 +2,7 @@ package com.study.restapi.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -32,14 +33,15 @@ public class EventControllerTests {
 //  private EventRepository eventRepository;
 
   @Test
+  @DisplayName("이벤트를 생성하는 테스트")
   public void createEvent() throws Exception {
     EventDto event = EventDto.builder()
       .name("Spring")
       .description("Rest API Study")
       .beginEnrollmentDateTime(LocalDateTime.of(2018, 11, 14, 14, 21))
       .closeEnrollmentDateTime(LocalDateTime.of(2018, 11, 15, 14, 21))
-      .beginEventDateTime(LocalDateTime.of(2018, 11, 15, 14, 21))
-      .endEventDateTime(LocalDateTime.of(2018, 11, 16, 14, 21))
+      .beginEventDateTime(LocalDateTime.of(2018, 11, 14, 14, 21))
+      .endEventDateTime(LocalDateTime.of(2018, 11, 16, 14, 23))
       .basePrice(100)
       .maxPrice(200)
       .limitOfEnrollment(100)
@@ -64,6 +66,7 @@ public class EventControllerTests {
   }
 
   @Test
+  @DisplayName("입력 받을 수 없는 값이 있는 경우 에러가 발생하는 테스트")
   public void createEvent_Bad_Request() throws Exception {
     Event event = Event.builder()
       .id(10)
@@ -92,6 +95,7 @@ public class EventControllerTests {
   }
 
   @Test
+  @DisplayName("입력값이 비어있는 경우 에러가 발생하는 테스트")
   public void createEvent_Bad_Request_Empty_Input() throws Exception {
     EventDto eventDto = EventDto.builder().build();
 
@@ -102,6 +106,7 @@ public class EventControllerTests {
   }
 
   @Test
+  @DisplayName("입력 값이 잘못된 경우 발생하는 에러가 발생하는 테스트")
   public void createEvent_Bad_Request_Wrong_Input() throws Exception {
     EventDto eventDto = EventDto.builder()
       .name("Spring")
