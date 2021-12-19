@@ -2,13 +2,17 @@ package com.study.restapi.events;
 
 import lombok.*;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
 @Builder
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
 @EqualsAndHashCode(of = "id")
 public class Event {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
   private String name;
   private String description;
@@ -22,6 +26,7 @@ public class Event {
   private int limitOfEnrollment;
   private boolean offline;
   private boolean free;
+  @Enumerated(EnumType.STRING)
   private EventStatus eventStatus;
 
 }
