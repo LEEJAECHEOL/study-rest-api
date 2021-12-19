@@ -22,12 +22,18 @@ public class EventController {
 
   private final EventRepository eventRepository;
   private final ModelMapper modelMapper;
+  private final EventValidator eventValidator;
 
   @PostMapping
   public ResponseEntity creatEvent(@Valid @RequestBody EventDto eventDto, Errors errors) {
     if (errors.hasErrors()) {
       return ResponseEntity.badRequest().build();
     }
+    eventValidator.validate(eventDto, errors);
+    if (errors.hasErrors()) {
+      return ResponseEntity.badRequest().build();
+    }
+
     Event event = modelMapper.map(eventDto, Event.class);
     Event newEvent = eventRepository.save(event);
     // import 참고 !!
