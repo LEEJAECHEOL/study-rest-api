@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -58,8 +59,8 @@ public class EventControllerTests {
       .andDo(print())
       .andExpect(status().isCreated())
       .andExpect(jsonPath("id").exists())
-      .andExpect(jsonPath("id").value(Matchers.not(100)))
-      .andExpect(jsonPath("free").value(Matchers.not(true)))
+      .andExpect(jsonPath("free").value(false))
+      .andExpect(jsonPath("offline").value(true))
       .andExpect(jsonPath("eventStatus").value(Matchers.not(EventStatus.DRAFT.name())))
       .andExpect(header().exists(HttpHeaders.LOCATION))
       .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE));
@@ -131,4 +132,5 @@ public class EventControllerTests {
       .andExpect(jsonPath("$[0].code").exists())
     ;
   }
+
 }
