@@ -37,8 +37,7 @@ public class EventControllerTests {
 
   @Test
   public void createEvent() throws Exception {
-    Event event = Event.builder()
-      .id(10)
+    EventDto event = EventDto.builder()
       .name("Spring")
       .description("Rest API Study")
       .beginEnrollmentDateTime(LocalDateTime.of(2018, 11, 14, 14, 21))
@@ -49,9 +48,6 @@ public class EventControllerTests {
       .maxPrice(200)
       .limitOfEnrollment(100)
       .location("Seoul anyWhere")
-      .free(true)
-      .offline(false)
-      .eventStatus(EventStatus.PUBLISHED)
       .build();
 
 //    Mockito.when(eventRepository.save(event)).thenReturn(event);
@@ -69,6 +65,34 @@ public class EventControllerTests {
       .andExpect(jsonPath("eventStatus").value(Matchers.not(EventStatus.DRAFT.name())))
       .andExpect(header().exists(HttpHeaders.LOCATION))
       .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE));
+  }
+
+  @Test
+  public void createEvent_Bad_Request() throws Exception {
+    Event event = Event.builder()
+      .id(10)
+      .name("Spring")
+      .description("Rest API Study")
+      .beginEnrollmentDateTime(LocalDateTime.of(2018, 11, 14, 14, 21))
+      .closeEnrollmentDateTime(LocalDateTime.of(2018, 11, 15, 14, 21))
+      .beginEventDateTime(LocalDateTime.of(2018, 11, 15, 14, 21))
+      .endEventDateTime(LocalDateTime.of(2018, 11, 16, 14, 21))
+      .basePrice(100)
+      .maxPrice(200)
+      .limitOfEnrollment(100)
+      .location("Seoul anyWhere")
+      .free(true)
+      .offline(false)
+      .eventStatus(EventStatus.PUBLISHED)
+      .build();
+
+    mockMvc.perform(post("/api/events")
+        .contentType(MediaType.APPLICATION_JSON)
+        .accept(MediaTypes.HAL_JSON)
+        .content(objectMapper.writeValueAsString(event)))
+      .andDo(print())
+      .andExpect(status().isBadRequest())
+    ;
   }
 
 }
