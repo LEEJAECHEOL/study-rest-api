@@ -63,7 +63,12 @@ public class EventControllerTests {
       .andExpect(jsonPath("offline").value(true))
       .andExpect(jsonPath("eventStatus").value(Matchers.not(EventStatus.DRAFT.name())))
       .andExpect(header().exists(HttpHeaders.LOCATION))
-      .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE));
+      .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
+      .andExpect(jsonPath("_links.self").exists())
+      .andExpect(jsonPath("_links.query-events").exists())
+      .andExpect(jsonPath("_links.update-event").exists())
+//      .andExpect(jsonPath("_link.profile").exists())
+    ;
   }
 
   @Test
