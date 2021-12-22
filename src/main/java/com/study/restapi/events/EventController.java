@@ -1,9 +1,9 @@
 package com.study.restapi.events;
 
+import com.study.restapi.commons.ErrorsResource;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.LinkRelation;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -30,11 +30,11 @@ public class EventController {
   @PostMapping
   public ResponseEntity creatEvent(@Valid @RequestBody EventDto eventDto, Errors errors) {
     if (errors.hasErrors()) {
-      return ResponseEntity.badRequest().body(errors);
+      return badRequest(errors);
     }
     eventValidator.validate(eventDto, errors);
     if (errors.hasErrors()) {
-      return ResponseEntity.badRequest().body(errors);
+      return badRequest(errors);
     }
 
     Event event = modelMapper.map(eventDto, Event.class);
@@ -52,5 +52,9 @@ public class EventController {
 //    eventResource.add(new Link("/docs/index.html#resources-events-create", LinkRelation.of("profile")));
 
     return ResponseEntity.created(createdUri).body(eventResource);
+  }
+
+  private ResponseEntity badRequest(Errors errors) {
+    return ResponseEntity.badRequest().body(new ErrorsResource(errors));
   }
 }
