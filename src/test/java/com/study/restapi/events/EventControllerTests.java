@@ -1,21 +1,13 @@
 package com.study.restapi.events;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.study.restapi.common.RestDocsConfiguration;
+import com.study.restapi.common.BaseControllerTest;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.stream.IntStream;
@@ -31,23 +23,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 //@WebMvcTest // 단위 테스트
-@SpringBootTest // 통합테스트
-@AutoConfigureMockMvc
-@AutoConfigureRestDocs
-@Import(RestDocsConfiguration.class)
-@ActiveProfiles("test")
-public class EventControllerTests {
-  @Autowired
-  private MockMvc mockMvc;
-
-  @Autowired
-  private ObjectMapper objectMapper;
+public class EventControllerTests extends BaseControllerTest {
 
   @Autowired
   private EventRepository eventRepository;
 
-  @Autowired
-  private ModelMapper modelMapper;
 
 //  @MockBean
 //  private EventRepository eventRepository;
